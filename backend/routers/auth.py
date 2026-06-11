@@ -10,10 +10,13 @@ from database import get_db
 import models, schemas
 from email_config import send_reset_email
 import os
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
+GOOGLE_CLIENT_ID = os.getenv("client_id") or "276277061558-qind0vp4m2v2bejg68upnfoggo0oaka8.apps.googleusercontent.com"
 
 # Secret key for JWT
-SECRET_KEY = os.getenv("private_key_id")
+SECRET_KEY = os.getenv("private_key_id") or "super-secret-jwt-key-for-careerpath-gh"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 RESET_TOKEN_EXPIRE_MINUTES = 60  # 1 hour
@@ -85,6 +88,49 @@ def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
     )
     
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/google", response_model=schemas.Token)
+def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_db)):
+    try:
+        # Verify the Google token
+        idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
+        
+        email = idinfo['email']
+        name = idinfo.get('name', '')
+        
+        # Check if user exists
+        user = db.query(models.User).filter(models.User.email == email).first()
+        
+        if not user:
+            # Create a new user since they don't exist
+            # Provide a dummy hashed password since they use Google
+            dummy_password = get_password_hash(secrets.token_urlsafe(32))
+            user = models.User(
+                email=email,
+                hashed_password=dummy_password,
+                full_name=name,
+                auth_provider="google"
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            
+        # Generate standard access token
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user.email}, expires_delta=access_token_expires
+        )
+        
+        return {"access_token": access_token, "token_type": "bearer"}
+        
+    except ValueError as e:
+        # Invalid token
+        print(f"Invalid Google token: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Google token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 @router.post("/forgot-password")
 async def forgot_password(request: schemas.ForgotPasswordRequest, db: Session = Depends(get_db)):

@@ -128,7 +128,7 @@ export default function ProgrammeDetailsPage({ params }) {
           
           {universities.length === 0 ? (
             <div className="glass-card p-8 rounded-2xl text-center text-muted-foreground">
-              We currently don't have records of universities offering this exact programme in our database.
+              We currently don&apos;t have records of universities offering this exact programme in our database.
             </div>
           ) : (
             <div className="space-y-4">

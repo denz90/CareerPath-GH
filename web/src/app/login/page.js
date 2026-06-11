@@ -3,8 +3,9 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { login, register, forgotPassword } from '@/services/api';
+import { login, register, forgotPassword, googleLogin } from '@/services/api';
 import { Mail, Lock, User, ArrowRight, Globe, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 function LoginContent() {
   const router = useRouter();
@@ -21,10 +22,13 @@ function LoginContent() {
 
   useEffect(() => {
     const m = searchParams.get('mode');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (m === 'signup') setMode('signup');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     else if (m === 'forgot') setMode('forgot');
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     else setMode('login');
-  }, []);
+  }, [searchParams]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -225,11 +229,24 @@ function LoginContent() {
                 <span className="relative px-4 text-xs uppercase text-muted-foreground bg-card">Or continue with</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors font-medium text-sm cursor-pointer">
-                  <Globe size={18} className="text-blue-500" />
-                  Google
-                </button>
+              <div className="grid grid-cols-2 gap-4 items-center">
+                <GoogleLogin
+                  onSuccess={async (credentialResponse) => {
+                    try {
+                      setLoading(true);
+                      const data = await googleLogin(credentialResponse.credential);
+                      document.cookie = `auth-token=${data.access_token}; path=/; max-age=604800`;
+                      router.push('/');
+                      router.refresh();
+                    } catch (error) {
+                      setLoading(false);
+                      setMessage({ type: 'error', text: 'Google authentication failed.' });
+                    }
+                  }}
+                  onError={() => {
+                    setMessage({ type: 'error', text: 'Google Login Failed' });
+                  }}
+                />
                 <button type="button" className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors font-medium text-sm cursor-pointer">
                   <User size={18} />
                   GitHub
@@ -239,7 +256,7 @@ function LoginContent() {
               <p className="mt-8 text-center text-xs text-muted-foreground">
                 {mode === 'login' ? (
                   <>
-                    Don't have an account?{" "}
+                    Don&apos;t have an account?{" "}
                     <button 
                       type="button"
                       onClick={() => updateMode('signup')}
@@ -265,7 +282,7 @@ function LoginContent() {
           )}
 
           <p className="mt-6 text-center text-[10px] text-muted-foreground/60 leading-relaxed">
-            By continuing, you agree to CareerPath GH's <br />
+            By continuing, you agree to CareerPath GH&apos;s <br />
             <Link href="#" className="text-primary/70 hover:underline">Terms of Service</Link> and <Link href="#" className="text-primary/70 hover:underline">Privacy Policy</Link>.
           </p>
         </div>

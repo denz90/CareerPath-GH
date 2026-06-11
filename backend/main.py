@@ -12,7 +12,7 @@ app = FastAPI(title="CareerPath GH API", description="Backend for CareerPath GH"
 # Configure CORS for frontend access
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://192.168.0.124:3000", "https://career-path-gh.vercel.app"], # In production, replace with specific origins
+    allow_origins=["http://localhost:3000", "http://192.168.0.124:3000", "https://career-path-gh.vercel.app"], # In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
     allow_headers=["Content-Type", "Authorization"],

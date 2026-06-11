@@ -39,6 +39,11 @@ export const register = async (email, password, fullName) => {
   return response.data;
 };
 
+export const googleLogin = async (token) => {
+  const response = await api.post('/auth/google', { token });
+  return response.data;
+};
+
 export const forgotPassword = async (email) => {
   const response = await api.post('/auth/forgot-password', { email });
   return response.data;

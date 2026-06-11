@@ -2,6 +2,8 @@ import "./globals.css";
 import Link from 'next/link';
 
 import UserMenu from './UserMenu';
+import ThemeToggle from './ThemeToggle';
+import ClientProviders from './ClientProviders';
 
 export const metadata = {
   title: "CareerPath GH",
@@ -11,6 +13,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{__html: `
+          try {
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.classList.add('dark');
+              document.documentElement.classList.remove('light');
+            } else {
+              document.documentElement.classList.remove('dark');
+              document.documentElement.classList.add('light');
+            }
+          } catch (_) {}
+        `}} />
+      </head>
       <body className="flex flex-col min-h-screen bg-background text-foreground">
         
         {/* Navigation Bar */}
@@ -31,6 +46,7 @@ export default function RootLayout({ children }) {
                 </div>
               </div>
               <div className="hidden md:flex items-center space-x-4">
+                <ThemeToggle />
                 <UserMenu />
               </div>
             </div>
@@ -39,7 +55,9 @@ export default function RootLayout({ children }) {
 
         {/* Main Content */}
         <main className="flex-grow flex flex-col">
-          {children}
+          <ClientProviders>
+            {children}
+          </ClientProviders>
         </main>
 
         {/* Footer */}

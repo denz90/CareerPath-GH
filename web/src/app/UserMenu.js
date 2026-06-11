@@ -2,19 +2,42 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { User, LogOut, ChevronDown } from 'lucide-react';
 
 export default function UserMenu() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [email, setEmail] = useState('');
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Check for auth cookie on mount and when router changes
+    // Check for auth cookie on mount and when path/router changes
     const checkAuth = () => {
-      const hasToken = document.cookie.split('; ').find(row => row.startsWith('auth-token='));
-      setIsLoggedIn(!!hasToken);
+      const tokenCookie = document.cookie.split('; ').find(row => row.startsWith('auth-token='));
+      if (tokenCookie) {
+        const token = tokenCookie.split('=')[1];
+        setIsLoggedIn(!!token);
+        
+        // Decode JWT payload to get email
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          }).join(''));
+          const payload = JSON.parse(jsonPayload);
+          if (payload && payload.sub) {
+            setEmail(payload.sub);
+          }
+        } catch (e) {
+          console.error("Failed to parse auth token:", e);
+        }
+      } else {
+        setIsLoggedIn(false);
+        setEmail('');
+      }
     };
 
     checkAuth();
@@ -22,12 +45,13 @@ export default function UserMenu() {
     // Simple way to listen for changes if we're on the same page
     window.addEventListener('focus', checkAuth);
     return () => window.removeEventListener('focus', checkAuth);
-  }, []);
+  }, [pathname]);
 
   const handleLogout = () => {
     // Clear cookie
     document.cookie = "auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     setIsLoggedIn(false);
+    setEmail('');
     setIsOpen(false);
     router.push('/login');
     router.refresh();
@@ -66,8 +90,10 @@ export default function UserMenu() {
           ></div>
           <div className="absolute right-0 mt-2 w-48 bg-card border border-border rounded-2xl shadow-xl z-20 overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-4 border-b border-border">
-              <p className="text-sm font-semibold truncate">Student Account</p>
-              <p className="text-xs text-muted-foreground truncate">mock-user@example.com</p>
+              <p className="text-sm font-semibold truncate">
+                {email ? email.split('@')[0] : 'Student Account'}
+              </p>
+              <p className="text-xs text-muted-foreground truncate">{email}</p>
             </div>
             <div className="p-2">
               <button 

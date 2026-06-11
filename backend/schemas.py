@@ -110,3 +110,6 @@ class TokenData(BaseModel):
 
 class ForgotPasswordRequest(BaseModel):
     email: str
+
+class GoogleTokenRequest(BaseModel):
+    token: str

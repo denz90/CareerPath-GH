@@ -14,8 +14,9 @@
   --border: #e2e8f0;
 }
 
+/* System preferences dark mode (if not explicitly set to light theme) */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     --background: #09090b;
     --foreground: #f8fafc;
     --primary: #6366f1;
@@ -28,6 +29,36 @@
     --card-foreground: #f8fafc;
     --border: #1e293b;
   }
+}
+
+/* Explicit manual dark theme overrides */
+:root.dark {
+  --background: #09090b;
+  --foreground: #f8fafc;
+  --primary: #6366f1;
+  --primary-foreground: #ffffff;
+  --secondary: #a78bfa;
+  --accent: #22d3ee;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --border: #1e293b;
+}
+
+/* Explicit manual light theme overrides */
+:root.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --primary: #4f46e5;
+  --primary-foreground: #ffffff;
+  --secondary: #8b5cf6;
+  --accent: #06b6d4;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
 }
 
 @theme inline {

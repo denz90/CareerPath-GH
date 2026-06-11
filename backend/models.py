@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Text, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 from datetime import datetime
@@ -98,6 +98,8 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     full_name = Column(String)
+    is_active = Column(Boolean, default=True)
+    auth_provider = Column(String, default="local")
     
     # Add these new fields
     reset_token = Column(String, nullable=True)
