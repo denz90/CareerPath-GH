@@ -1,3 +1,4 @@
+from email_validator import validate_email
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
@@ -8,9 +9,11 @@ import secrets
 from database import get_db
 import models, schemas
 from email_config import send_reset_email
+import os
+
 
 # Secret key for JWT
-SECRET_KEY = "your-secret-key-for-careerpath-gh-development"
+SECRET_KEY = os.getenv("private_key_id")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 RESET_TOKEN_EXPIRE_MINUTES = 60  # 1 hour
