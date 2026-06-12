@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/applestreet/.gemini/antigravity/scratch/CareerPath-GH/backend/venv"
+VIRTUAL_ENV="/Users/applestreet/Desktop/CareerPath-GH/backend/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

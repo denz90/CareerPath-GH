@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/applestreet/.gemini/antigravity/scratch/CareerPath-GH/backend/venv"
+set -gx VIRTUAL_ENV "/Users/applestreet/Desktop/CareerPath-GH/backend/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
