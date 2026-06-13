@@ -162,21 +162,17 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* 1. Hero Section */}
-      <section className="relative overflow-hidden bg-background pt-24 pb-28 md:pt-32 md:pb-36 min-h-[85vh] flex items-center">
-        {/* Full-bleed Background Image with premium overlays */}
-        <div className="absolute inset-0 -z-20">
-          <img 
-            src="/hero-image.png" 
-            alt="Ghanaian university campus backdrop" 
-            className="w-full h-full object-cover filter brightness-[0.95] dark:brightness-[0.25] contrast-[1.02]"
-          />
-          {/* Subtle grid on top of background */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(99,102,241,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(99,102,241,0.02)_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-          {/* Multi-stage color washes for text contrast across light and dark modes */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/40 dark:from-background dark:via-background/95 dark:to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
-        </div>
-        
+      <section className="relative min-h-[915px] flex items-center justify-center overflow-hidden">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0 z-0" style={{ height: '100%' }}>
+            <img
+              src="/hero-image.png"
+              className="w-full object-cover"
+              alt="Hero Background"
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.50) 60%, rgba(0,0,0,0.35) 100%)' }}></div>
+          </div>
         {/* Ambient background glow objects */}
         <div className="absolute top-10 right-10 -translate-y-12 translate-x-1/3 -z-10">
           <div className="w-[500px] h-[500px] rounded-full bg-primary/10 blur-[130px] animate-pulse-slow"></div>
@@ -189,18 +185,18 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
             {/* Left Hero Column */}
-            <div className="lg:col-span-7 text-left flex flex-col justify-center animate-slide-up">
-              <div className="inline-flex items-center space-x-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-semibold text-primary mb-6 max-w-fit backdrop-blur-md">
-                <Sparkles size={14} className="text-primary animate-spin" style={{ animationDuration: '3s' }} />
+            <div className="lg:col-span-7 text-left flex flex-col justify-center animate-slide-up text-white">
+              <div className="inline-flex items-center space-x-2 rounded-full border border-white/30 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white mb-6 max-w-fit backdrop-blur-md">
+                <Sparkles size={14} className="text-white animate-spin" style={{ animationDuration: '3s' }} />
                 <span>Smart Academic Counselor for Ghanaian Students</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight text-white" style={{ textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
                 Plan Your Future <br />
                 <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                   With Full Confidence
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed">
+              <p className="text-lg md:text-xl mb-8 max-w-xl leading-relaxed" style={{ color: 'rgba(255,255,255,0.82)' }}>
                 Take the guesswork out of tertiary admissions. Match your WASSCE/SSSCE grades and career personality to the ideal university programs in Ghana.
               </p>
               
@@ -214,141 +210,28 @@ export default function Home() {
                 </Link>
                 <Link 
                   href="/programmes" 
-                  className="inline-flex justify-center items-center rounded-2xl bg-card border border-border hover:bg-muted/50 px-8 py-4 text-base font-bold text-foreground shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+                  className="inline-flex justify-center items-center rounded-2xl border border-white/40 bg-white/10 hover:bg-white/20 backdrop-blur-sm px-8 py-4 text-base font-bold text-white shadow-sm hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
                 >
                   Explore Programmes
                 </Link>
               </div>
 
               {/* Dynamic Badges / Social Proof */}
-              <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-border/60">
+              <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-white/20">
                 <div className="flex items-center space-x-2">
-                  <CheckCircle size={18} className="text-green-500" />
-                  <span className="text-sm font-medium text-muted-foreground">Updated 2026 Cutoffs</span>
+                  <CheckCircle size={18} className="text-green-400" />
+                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.80)' }}>Updated 2026 Cutoffs</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle size={18} className="text-green-500" />
-                  <span className="text-sm font-medium text-muted-foreground">10+ Public & Private Unis</span>
+                  <CheckCircle size={18} className="text-green-400" />
+                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.80)' }}>10+ Public & Private Unis</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <CheckCircle size={18} className="text-green-500" />
-                  <span className="text-sm font-medium text-muted-foreground">RIASEC-Powered Results</span>
+                  <CheckCircle size={18} className="text-green-400" />
+                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.80)' }}>RIASEC-Powered Results</span>
                 </div>
               </div>
             </div>
-
-            {/* Right Hero Column: Interactive Live Preview Widget overlaying the backdrop */}
-            <div className="lg:col-span-5 w-full max-w-lg mx-auto">
-              <div className="glass-card w-full rounded-3xl p-6 md:p-8 border-primary/20 dark:border-white/10 relative overflow-hidden shadow-2xl bg-card/80 dark:bg-card/45 backdrop-blur-lg">
-                
-                {/* Header of widget */}
-                <div className="flex items-center justify-between pb-4 border-b border-border/60 mb-6">
-                  <div className="flex items-center space-x-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-                      <BrainCircuit size={18} />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-bold">Career Match Test</h3>
-                      <p className="text-[10px] text-muted-foreground">Instant Interest Preview</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-accent/10 text-accent">
-                    Live Demo
-                  </span>
-                </div>
-
-                {/* Body - MultiStep Interactive Mock Quiz */}
-                {quizStep === 0 && (
-                  <div className="text-center py-6">
-                    <p className="text-sm text-muted-foreground mb-6">
-                      Anxious about choosing a degree? Answer 3 quick interest questions to preview your custom fields.
-                    </p>
-                    <button
-                      onClick={() => setQuizStep(1)}
-                      className="w-full bg-primary hover:bg-primary/95 text-primary-foreground py-3.5 px-6 rounded-2xl font-bold transition-all shadow-md cursor-pointer hover:shadow-primary/20"
-                    >
-                      Begin Preview Quiz
-                    </button>
-                  </div>
-                )}
-
-                {quizStep >= 1 && quizStep <= 3 && (
-                  <div>
-                    {/* Progress Bar */}
-                    <div className="w-full bg-muted h-1.5 rounded-full mb-6 overflow-hidden">
-                      <div 
-                        className="bg-primary h-full transition-all duration-300"
-                        style={{ width: `${(quizStep / 3) * 100}%` }}
-                      ></div>
-                    </div>
-                    
-                    {/* Question */}
-                    <div className="mb-8 min-h-[120px] flex flex-col justify-center">
-                      <div className="flex items-center space-x-3 mb-4">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${PREVIEW_QUESTIONS[quizStep - 1].color}`}>
-                          {(() => {
-                            const IconComponent = PREVIEW_QUESTIONS[quizStep - 1].icon;
-                            return <IconComponent size={16} />;
-                          })()}
-                        </div>
-                        <span className="text-xs font-bold text-primary">QUESTION {quizStep} OF 3</span>
-                      </div>
-                      <p className="text-base font-semibold leading-relaxed">
-                        {PREVIEW_QUESTIONS[quizStep - 1].question}
-                      </p>
-                    </div>
-
-                    {/* Choices */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <button
-                        onClick={() => handleAnswer("yes")}
-                        className="py-3.5 px-4 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold transition-all cursor-pointer shadow-md text-sm"
-                      >
-                        Yes, I do
-                      </button>
-                      <button
-                        onClick={() => handleAnswer("no")}
-                        className="py-3.5 px-4 rounded-xl border border-border hover:bg-muted bg-muted/20 font-bold transition-all cursor-pointer text-sm"
-                      >
-                        No, not really
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {quizStep === 4 && (
-                  <div className="text-center py-4">
-                    <div className="w-12 h-12 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle size={24} />
-                    </div>
-                    <h4 className="text-lg font-bold mb-2">Analysis Complete!</h4>
-                    <p className="text-xs text-muted-foreground mb-4">Your answers point strongly towards:</p>
-                    
-                    <div className="p-4 rounded-2xl bg-muted/60 border border-border/80 mb-6">
-                      <span className="block text-sm font-extrabold text-foreground">{matchedField}</span>
-                      <span className="text-[10px] text-primary font-medium mt-1 inline-block">Popular matches: KNUST, UG Legon, UCC</span>
-                    </div>
-
-                    <div className="space-y-3">
-                      <Link
-                        href="/assessment"
-                        className="block w-full bg-primary hover:bg-primary/95 text-primary-foreground py-3.5 rounded-2xl font-bold transition-all text-sm cursor-pointer"
-                      >
-                        Take Full 20-Question Quiz
-                      </Link>
-                      <button
-                        onClick={resetQuiz}
-                        className="text-xs text-muted-foreground hover:text-foreground font-medium underline cursor-pointer"
-                      >
-                        Reset and Try Again
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-              </div>
-            </div>
-
           </div>
         </div>
       </section>
