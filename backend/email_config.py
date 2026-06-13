@@ -16,8 +16,9 @@ conf = ConnectionConfig(
 )
 
 async def send_reset_email(email: EmailStr, reset_token: str):
-    # Your frontend URL - update this to your actual frontend URL
-    reset_link = f"http://localhost:3000/reset-password?token={reset_token}"
+    # Read frontend URL from environment variable — set this in Render's env vars
+    frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    reset_link = f"{frontend_url}/reset-password?token={reset_token}"
     
     html_content = f"""
     <html>
