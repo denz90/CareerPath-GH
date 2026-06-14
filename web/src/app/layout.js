@@ -66,7 +66,7 @@ export default function RootLayout({ children }) {
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="mb-4 md:mb-0">
                 <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">CareerPath GH</span>
-                <p className="text-muted-foreground mt-2 text-sm">Empowering Ghanaian SHS leavers to make informed decisions.</p>
+                <p className="text-muted-foreground mt-2 text-sm">Empowering Ghanaian SHS leaver to make informed decisions.</p>
               </div>
               <div className="flex space-x-6 text-sm font-medium text-muted-foreground">
                 <Link href="/" className="hover:text-primary transition-colors">About</Link>
