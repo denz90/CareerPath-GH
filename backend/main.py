@@ -2,6 +2,12 @@ import os
 import pydantic
 from pydantic import SecretStr
 pydantic.SecretStr = SecretStr  # Force the patch FIRST
+# --- ADD THIS BCRYPT PATCH HERE ---
+import bcrypt
+if not hasattr(bcrypt, "__about__"):
+    class FakeAbout:
+        __version__ = bcrypt.__version__
+    bcrypt.__about__ = FakeAbout()
 
 # Now you can safely import everything else
 from fastapi import FastAPI
