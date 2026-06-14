@@ -92,18 +92,26 @@ def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
 @router.post("/google", response_model=schemas.Token)
 def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_db)):
     try:
-        # Verify the Google token
-        idinfo = id_token.verify_oauth2_token(request.token, requests.Request(), GOOGLE_CLIENT_ID)
+        # Verify the access token by fetching user info from Google
+        import httpx
+        resp = httpx.get(
+            "https://www.googleapis.com/oauth2/v3/userinfo",
+            headers={"Authorization": f"Bearer {request.token}"},
+            timeout=10,
+        )
+        if resp.status_code != 200:
+            raise ValueError(f"Google userinfo returned {resp.status_code}")
         
-        email = idinfo['email']
-        name = idinfo.get('name', '')
+        idinfo = resp.json()
+        email = idinfo.get("email")
+        name = idinfo.get("name", "")
         
-        # Check if user exists
+        if not email:
+            raise ValueError("No email in Google response")
+        
+        # Check if user exists, create if not
         user = db.query(models.User).filter(models.User.email == email).first()
-        
         if not user:
-            # Create a new user since they don't exist
-            # Provide a dummy hashed password since they use Google
             dummy_password = get_password_hash(secrets.token_urlsafe(32))
             user = models.User(
                 email=email,
@@ -124,8 +132,7 @@ def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_d
         return {"access_token": access_token, "token_type": "bearer"}
         
     except ValueError as e:
-        # Invalid token
-        print(f"Invalid Google token: {e}")
+        print(f"Google auth error: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid Google token",
