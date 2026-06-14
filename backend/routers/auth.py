@@ -112,7 +112,7 @@ def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_d
         # Check if user exists, create if not
         user = db.query(models.User).filter(models.User.email == email).first()
         if not user:
-            dummy_password = get_password_hash(secrets.token_urlsafe(32))
+            dummy_password = get_password_hash(secrets.token_urlsafe(12))
             user = models.User(
                 email=email,
                 hashed_password=dummy_password,
