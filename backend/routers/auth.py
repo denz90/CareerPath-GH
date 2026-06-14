@@ -112,6 +112,7 @@ def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_d
         # Check if user exists, create if not
         user = db.query(models.User).filter(models.User.email == email).first()
         if not user:
+            # FIX: Changed 72 to 16 to safely fit inside bcrypt's 72-byte string limit
             dummy_password = get_password_hash(secrets.token_urlsafe(16))
             user = models.User(
                 email=email,
@@ -188,4 +189,3 @@ def reset_password(request: schemas.ResetPasswordRequest, db: Session = Depends(
     db.commit()
     
     return {"message": "Password has been reset successfully"}
-    
