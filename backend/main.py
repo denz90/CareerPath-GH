@@ -17,18 +17,23 @@ app = FastAPI(title="CareerPath GH API", description="Backend for CareerPath GH"
 
 # Configure CORS for frontend access
 # Set ALLOWED_ORIGINS in Render env vars as comma-separated URLs
+# Configure CORS for frontend access
 _raw_origins = os.getenv(
     "ALLOWED_ORIGINS",
     "http://localhost:3000,http://192.168.0.124:3000,https://career-path-gh.vercel.app"
 )
 allowed_origins = [o.strip() for o in _raw_origins.split(",") if o.strip()]
 
+# FORCE include your production URL explicitly to guarantee it catches
+if "https://career-path-gh.vercel.app" not in allowed_origins:
+    allowed_origins.append("https://career-path-gh.vercel.app")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Changed to wildcard to ensure preflight OPTIONS pass
+    allow_headers=["*"],  # Changed to wildcard to prevent header rejections
 )
 
 # Include routers

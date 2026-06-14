@@ -93,8 +93,8 @@ def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
 def google_auth(request: schemas.GoogleTokenRequest, db: Session = Depends(get_db)):
     try:
         # Verify the access token by fetching user info from Google
-        import http
-        resp = http.get(
+        import httpx
+        resp = httpx.get(
             "https://www.googleapis.com/oauth2/v3/userinfo",
             headers={"Authorization": f"Bearer {request.token}"},
             timeout=10,
