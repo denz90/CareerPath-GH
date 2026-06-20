@@ -50,7 +50,8 @@ if __name__ == "__main__":
     
     sql_files = [
         "../database/careerpath_gh_database.sql",
-        "../database/careerpath_gh_database_v2_extension.sql"
+        "../database/careerpath_gh_database_v2_extension.sql",
+        "../database/careerpath_gh_database_v3_extension.sql"
     ]
     
     seed_data(db_path, sql_files)
